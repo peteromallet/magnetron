@@ -3,7 +3,7 @@ boto3
 botocore
 requests
 pandas
-opencv-python
+opencv-python-headless
 openai
 streamlit
 replicate
