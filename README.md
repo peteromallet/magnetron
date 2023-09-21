@@ -23,9 +23,7 @@ REPLICATE_API_TOKEN=
 To install dependencies, run:
 
 ```
-conda env create -f environment.yml
-
-conda activate magnetron
+pip install -r requirements.txt
 ```
 
 Then, to run the tool, run:
