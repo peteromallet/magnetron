@@ -8,7 +8,7 @@ You can see the current output from this tool [here](https://magnetron-output.st
 
 ![Data Examples](https://banodoco.s3.amazonaws.com/data_examples.webp)
 
-### To run this locally:
+### To run this:
 
 Currently, we use API providers for convenience. To insert relevant API keys, create a .env file in the root directory in the following format with the relevant keys you need:
 
