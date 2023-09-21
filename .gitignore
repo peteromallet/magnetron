@@ -1,0 +1,44 @@
+# Log files
+bot.log
+
+# Output folder
+/output/*
+
+# Backups folder
+/backups/*
+
+# Specific CSV files
+results_10M_train.csv
+results_2M_train.csv
+
+# Environment variables
+.env
+
+# Other common items to ignore
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.egg-info/
+*.egg
+*.pyc
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# macOS
+.DS_Store

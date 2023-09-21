@@ -1,0 +1,24 @@
+name: magnetron
+channels:
+  - defaults
+dependencies:
+  - python=3.8
+  - pip
+  - pip:
+    - os
+    - csv
+    - time
+    - json
+    - re
+    - uuid
+    - yaml
+    - boto3
+    - botocore
+    - requests
+    - pandas
+    - cv2
+    - openai
+    - streamlit
+    - replicate
+    - python-dotenv
+    - pillow
