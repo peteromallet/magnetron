@@ -334,7 +334,7 @@ def main():
                 additional_keywords != keywords_data.get('additional_keywords', '')):
                 
                 # Update the YAML file
-                with open('keywords.yaml', 'w') as file:
+                with open('configs/keywords.yaml', 'w') as file:
                     yaml.dump({
                         'positive_keywords': positive_keywords,
                         'negative_keywords': negative_keywords,
@@ -369,7 +369,7 @@ def main():
 
                 st.title('Video Searcher')
 
-                with open('keywords.yaml', 'r') as file:
+                with open('configs/keywords.yaml', 'r') as file:
                     keywords_data = yaml.safe_load(file)
 
                 positive_keywords = st.text_input('Enter keywords:', value=keywords_data.get('positive_keywords', ''))
@@ -642,7 +642,7 @@ def main():
             # Check if any question has been updated
             if updated_questions != questions or updated_filtering_question != filtering_question:
                 # Update the YAML file
-                with open('questions.yaml', 'w') as file:
+                with open('configs/questions.yaml', 'w') as file:
                     yaml.dump({
                         'questions': updated_questions,
                         'filtering_question': updated_filtering_question
@@ -650,7 +650,7 @@ def main():
 
         
 
-        with open('questions.yaml', 'r') as file:
+        with open('configs/questions.yaml', 'r') as file:
             data = yaml.safe_load(file)
 
         tab1, tab2 = st.tabs(['Queue Descriptions', 'Question Testing'])
