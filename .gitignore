@@ -10,6 +10,7 @@ bot.log
 # Specific CSV files
 results_10M_train.csv
 results_2M_train.csv
+results.csv
 
 # Environment variables
 .env

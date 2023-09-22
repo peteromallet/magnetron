@@ -16,6 +16,8 @@ import replicate
 from dotenv import load_dotenv
 from io import BytesIO
 from PIL import Image
+import random
+
 
 
 def upload_image_to_s3(bucket_name, file_path, s3_key, overwrite=False):
@@ -995,6 +997,88 @@ def main():
             
     elif section == 'Approved Pairs':
 
+        def prep_data_for_ip2p():
+            # Create the data directory if it doesn't exist
+            if not os.path.exists('data'):
+                os.makedirs('data')
+
+            # Fetch the DataFrame
+            df = fetch_and_filter_data(statuses=['approved'])
+
+            counter = 0
+            for _, row in df.iterrows():
+                dir_name = f'data/image_{counter}'
+                counter += 1
+                if not os.path.exists(dir_name):
+                    os.makedirs(dir_name)
+
+                                # Create prompt.json
+                with open(f'{dir_name}/prompt.json', 'w') as file:
+                    # Parse the JSON string in the 'caption' column
+                    caption_data = json.loads(row['caption'])
+
+                    # Extract the data from all pairs and join them with commas
+                    output_caption = ', '.join([str(value) for pair in caption_data for value in pair.values() if value])
+
+                    # Insert the extracted data into the JSON file
+                    json.dump({
+                        'caption': row['original_caption'],
+                        'output': output_caption,
+                        'edit': output_caption
+                    }, file)
+                # Generate a random 8-digit number
+                seed = random.randint(10000000, 99999999)
+
+                # Create metadata.jsonl
+                with open(f'{dir_name}/metadata.jsonl', 'w') as file:
+                    json.dump({
+                        'seed': seed,
+                        'p2p_threshold': 0.2,
+                        'cfg_scale': 7.5,
+                        'clip_sim_0': 0.8,
+                        'clip_sim_1': 0.85,
+                        'clip_sim_dir': 0.3,
+                        'clip_sim_image': 0.7
+                    }, file)
+
+                # Download the images and save them as {seed}_0.png and {seed}_1.png
+                for j, image_url in enumerate([row['image_0_location'], row['image_1_location']]):
+                    response = requests.get(image_url)
+                    with open(f'{dir_name}/{seed}_{j}.png', 'wb') as file:
+                        file.write(response.content)
+
+                    # Open the image and crop it to a 512x512 square at the center
+                    img = Image.open(f'{dir_name}/{seed}_{j}.png')
+                    width, height = img.size
+                    left = (width - 512)/2
+                    top = (height - 512)/2
+                    right = (width + 512)/2
+                    bottom = (height + 512)/2
+                    img = img.crop((left, top, right, bottom))
+
+                    # Save the cropped image
+                    img.save(f'{dir_name}/{seed}_{j}.png')
+
+        with st.sidebar:
+
+            st.subheader("Data Preparation")
+
+            st.info("Here, you can prepare data for IP2P or the motion module.")
+            
+            data_type = st.selectbox('Which type of data?', ['ip2p','motion_module'])
+
+            if data_type == 'motion_module':
+                grab_videos = st.checkbox('Grab full videos', value=False)
+
+            if st.button('Prepare Data'):
+                if data_type == 'ip2p':
+                    prep_data_for_ip2p()
+                    st.experimental_rerun()
+                elif data_type == 'motion_module':
+                    st.error("This feature is not yet implemented.")
+
+
+            
         display_rows_with_editing('approved')
 
 
